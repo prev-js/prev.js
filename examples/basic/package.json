@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@prevjs/cli": "workspace:*"
+  }
+}

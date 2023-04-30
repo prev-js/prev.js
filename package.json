@@ -1,0 +1,11 @@
+{
+  "name": "prev.js",
+  "version": "0.1.0",
+  "description": "The Prev-Gen React Framework.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zoubingwu",
+  "license": "MIT",
+  "packageManager": "pnpm@8.3.1"
+}
