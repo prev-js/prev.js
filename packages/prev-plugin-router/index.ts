@@ -1,12 +1,12 @@
 import type { Plugin } from "vite";
 import { transformWithEsbuild } from "vite";
 
-import { Context } from "./context";
+import { Context, UserOptions } from "./context";
 
 const MODULE_ID_VIRTUAL = "virtual:router";
 
-export default function withRouter(): Plugin {
-  const ctx: Context = new Context();
+export default function withRouter(options: UserOptions): Plugin {
+  const ctx: Context = new Context(options);
 
   return {
     name: "@prevjs/vite-plugin-router",

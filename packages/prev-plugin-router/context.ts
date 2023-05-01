@@ -12,6 +12,8 @@ interface Options {
   pageDir: string;
 }
 
+export type UserOptions = Partial<Options> | undefined;
+
 export class Context {
   private _pages = new Map();
   public root: string = ".";
@@ -22,6 +24,13 @@ export class Context {
     document: "_document",
     pageDir: "pages",
   };
+
+  constructor(options?: UserOptions) {
+    this.options = {
+      ...this.options,
+      ...options,
+    };
+  }
 
   public search() {
     const { extensions, root, pageDir } = this.options;
@@ -80,12 +89,20 @@ export class Context {
     import React from "react";
     import { createRoot } from 'react-dom/client';
     import { Route, Switch } from "prev.js";
-    ${routes.map((i) => `import ${i.name} from "${i.path}";`).join("\n")}
+    ${routes.map((i) => `const ${i.name} = React.lazy(() => import("${i.path}"));`).join("\n")}
 
     function App() {
       return (
         <Switch>
-          ${routes.map((i) => `<Route path="${i.route}" component={${i.name}} />`)}
+          ${routes.map(
+            (i) => `(
+              <Route path="${i.route}">
+                <React.Suspense fallback={"Loading..."}>
+                  <${i.name} />
+                </React.Suspense>
+              </Route>
+            )`
+          )}
         </Switch>
       )
     }

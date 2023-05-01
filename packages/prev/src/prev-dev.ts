@@ -1,5 +1,4 @@
 import process from "node:process";
-// import { fileURLToPath } from "node:url";
 import { createServer } from "vite";
 import withReact from "@vitejs/plugin-react";
 import withRouter from "@prevjs/vite-plugin-router";
@@ -12,13 +11,12 @@ const defaultOptions: DevCommandOption = {
   port: 4567,
 };
 
-export async function dev(options: DevCommandOption) {
+export async function dev(root = process.cwd(), options: DevCommandOption) {
   options = {
     ...defaultOptions,
     ...options,
   };
 
-  const root = process.cwd();
   const server = await createServer({
     configFile: false,
     root,
@@ -26,7 +24,7 @@ export async function dev(options: DevCommandOption) {
     server: {
       port: options.port,
     },
-    plugins: [withRouter(), withReact()],
+    plugins: [withRouter({ root }), withReact()],
   });
 
   await server.listen();
