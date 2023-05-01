@@ -5,24 +5,17 @@ import withRouter from "@prevjs/vite-plugin-router";
 
 interface DevCommandOption {
   port: number;
+  host: string;
 }
 
-const defaultOptions: DevCommandOption = {
-  port: 4567,
-};
-
 export async function dev(root = process.cwd(), options: DevCommandOption) {
-  options = {
-    ...defaultOptions,
-    ...options,
-  };
-
   const server = await createServer({
     configFile: false,
     root,
     mode: "development",
     server: {
-      port: options.port,
+      port: options?.port,
+      host: options.host,
     },
     plugins: [withRouter({ root }), withReact()],
   });
