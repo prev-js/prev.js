@@ -1,4 +1,4 @@
-import { Link } from "@prevjs/client";
+import { Link } from "prev.js";
 
 export default function Home() {
   return (

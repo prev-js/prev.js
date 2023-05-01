@@ -79,7 +79,7 @@ export class Context {
     const code = `
     import React from "react";
     import { createRoot } from 'react-dom/client';
-    import { Route, Switch } from "@prevjs/client";
+    import { Route, Switch } from "prev.js";
     ${routes.map((i) => `import ${i.name} from "${i.path}";`).join("\n")}
 
     function App() {
