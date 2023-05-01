@@ -1,0 +1,50 @@
+{
+  "name": "@prevjs/client",
+  "version": "0.1.0",
+  "description": "Client for the Prev-Gen React Framework",
+  "bin": {
+    "prev": "./bin/cli.js"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "main": "dist/index.js",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "keywords": [],
+  "author": "zoubingwu",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.21.5",
+    "@prevjs/vite-plugin-router": "workspace:*",
+    "@types/node": "^18.16.3",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "cac": "^6.7.14",
+    "vite": "^4.3.3",
+    "wouter": "^2.10.1"
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts",
+      "src/cli.ts"
+    ],
+    "format": [
+      "esm",
+      "cjs"
+    ],
+    "splitting": true,
+    "sourcemap": true,
+    "clean": true,
+    "dts": true
+  }
+}
