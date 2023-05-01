@@ -12,7 +12,7 @@ const cli = cac("prev");
 cli
   .command("dev [dir]", "Start the application in development mode with hot reloading")
   .option("-p, --port <number>", "Specify a port number to start the dev server")
-  .option("--host <string>", "Specify which IP addresses the server should listen on")
+  .option("--host [string]", "Specify which IP addresses the server should listen on")
   .usage(
     "dev [dir]\n\n  [dir] represents the directory of the application. By default, the current directory will be used."
   )
@@ -31,7 +31,7 @@ cli
     "start [dir]\n\n  [dir] represents the directory of the application. By default, the current directory will be used."
   )
   .option("-p, --port <number>", "Specify a port number to start the dev server")
-  .option("--host <string>", "Specify which IP addresses the server should listen on")
+  .option("--host [string]", "Specify which IP addresses the server should listen on")
   .action(start);
 
 cli

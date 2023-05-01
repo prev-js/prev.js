@@ -38,6 +38,11 @@ export default function withRouter(options: UserOptions): Plugin {
       transform: () => {
         return [
           {
+            tag: "div",
+            attrs: { id: "root" },
+            injectTo: "body",
+          },
+          {
             tag: "script",
             attrs: { type: "module" },
             children: `import "/${MODULE_ID_VIRTUAL}"`,

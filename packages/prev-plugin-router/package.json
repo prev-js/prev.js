@@ -1,5 +1,6 @@
 {
   "name": "@prevjs/vite-plugin-router",
+  "private": true,
   "devDependencies": {
     "vite": "^4.3.3"
   },

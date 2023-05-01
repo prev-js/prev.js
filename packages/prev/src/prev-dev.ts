@@ -2,6 +2,7 @@ import process from "node:process";
 import { createServer } from "vite";
 import withReact from "@vitejs/plugin-react";
 import withRouter from "@prevjs/vite-plugin-router";
+import { createCustomIndexHtmlMiddleware } from "./middleware";
 
 interface DevCommandOption {
   port: number;
@@ -17,8 +18,11 @@ export async function dev(root = process.cwd(), options: DevCommandOption) {
       port: options?.port,
       host: options.host,
     },
+    appType: "custom",
     plugins: [withRouter({ root }), withReact()],
   });
+
+  server.middlewares.use(createCustomIndexHtmlMiddleware(server));
 
   await server.listen();
   server.printUrls();

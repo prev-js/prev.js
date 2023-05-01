@@ -27,7 +27,9 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.21.5",
     "@prevjs/vite-plugin-router": "workspace:*",
+    "@types/etag": "^1.8.1",
     "@types/node": "^18.16.3",
+    "etag": "^1.8.1",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   },
