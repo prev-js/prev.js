@@ -1,4 +1,6 @@
 {
+  "name": "playground",
+  "private": true,
   "scripts": {
     "dev": "prev dev",
     "build": "prev build",
