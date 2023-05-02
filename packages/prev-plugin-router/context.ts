@@ -97,7 +97,7 @@ export class Context {
           ${routes.map(
             (i) => `(
               <Route path="${i.route}">
-                <React.Suspense fallback={"Loading..."}>
+                <React.Suspense fallback={null}>
                   <${i.name} />
                 </React.Suspense>
               </Route>
