@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 import fg from "fast-glob";
 import { ViteDevServer } from "vite";
@@ -6,23 +7,48 @@ import camelCase from "just-camel-case";
 
 interface Options {
   extensions: string[];
-  layout: string;
-  document: string;
   root: string;
   pageDir: string;
+  reserved: {
+    ducoment: string;
+    layout: string;
+    error: string;
+    loader: string;
+  };
 }
 
 export type UserOptions = Partial<Options> | undefined;
 
+const MATCH_ALL_ROUTE = "*";
+
+function isErrorPage(filename: string, options: Options) {
+  return filename === options.reserved.error;
+}
+
+function isLayoutPage(filename: string, options: Options) {
+  return filename === options.reserved.layout;
+}
+
+function isLoaderPage(filename: string, options: Options) {
+  return filename === options.reserved.loader;
+}
+
 export class Context {
   private _pages = new Map();
-  public root: string = ".";
+  private _loader = "";
+  private _layout = "";
+
   public options: Options = {
     root: ".",
     extensions: ["js", "jsx", "ts", "tsx"],
-    layout: "_app",
-    document: "_document",
     pageDir: "pages",
+    reserved: {
+      // not supported
+      ducoment: "",
+      layout: "_app",
+      error: "_error",
+      loader: "_loader",
+    },
   };
 
   constructor(options?: UserOptions) {
@@ -34,15 +60,39 @@ export class Context {
 
   public search() {
     const { extensions, root, pageDir } = this.options;
-    const files = fg.sync([`**/*.{${extensions.join()}}`, `!${reservedFiles(this.options)}`], {
+    const files = fg.sync(
+      [`**/*.{${extensions.join()}}`, `!**/${reservedFiles(this.options)}`, `!**/_*`],
+      {
+        onlyFiles: true,
+        cwd: path.resolve(root, pageDir),
+      }
+    );
+
+    const map = new Map<string, string>();
+    files.forEach((file) => {
+      const route = normalizePathToRoute(file, this.options);
+      map.set(route, file);
+    });
+
+    const reserveds = fg.sync([`${reservedFiles(this.options)}`], {
       onlyFiles: true,
       cwd: path.resolve(root, pageDir),
     });
-    const map = new Map<string, string>();
-    files.forEach((file) => {
-      const route = normalizePathToRoute(file);
-      map.set(route, file);
+
+    reserveds.forEach((v) => {
+      const full = path.resolve(root, pageDir, v);
+      const { name } = path.parse(v);
+      if (!fs.existsSync(full)) return;
+
+      if (isErrorPage(name, this.options)) {
+        map.set("*", v);
+      } else if (isLoaderPage(name, this.options)) {
+        this._loader = full;
+      } else if (isLayoutPage(name, this.options)) {
+        this._layout = full;
+      }
     });
+
     this._pages = map;
   }
 
@@ -52,7 +102,7 @@ export class Context {
   }
 
   public invalidateAndRegenerateRoutes(filaPath: string) {
-    if (!isTarget(filaPath, this.options)) {
+    if (!isInsidePageDirectory(filaPath, this.options)) {
       return;
     }
 
@@ -66,6 +116,7 @@ export class Context {
     }
 
     const map = this._pages;
+
     const sortedRoutes = sortRoutes([...map.keys()]);
     const routes = sortedRoutes.map((route) => {
       const filePath = map.get(route)!;
@@ -87,65 +138,68 @@ export class Context {
 
     const code = `
     import React from "react";
-    import { createRoot } from 'react-dom/client';
+    import { createRoot } from "react-dom/client";
     import { Route, Switch } from "prev.js";
-    ${routes.map((i) => `const ${i.name} = React.lazy(() => import("${i.path}"));`).join("\n")}
+
+    ${this._loader ? `import Loader from "${this._loader}";` : ""}
+    ${this._layout ? `import Layout from "${this._layout}";` : ""}
+    ${routes.map((i) => `const ${i.name} = React.lazy(() => import("${i.path}"));`).join("\n    ")}
 
     function App() {
       return (
         <Switch>
-          ${routes.map(
-            (i) => `(
-              <Route path="${i.route}">
-                <React.Suspense fallback={null}>
-                  <${i.name} />
+          ${routes
+            .map(
+              (i) => `
+              <Route path="${i.route === MATCH_ALL_ROUTE ? `/:all*` : i.route}">
+                <React.Suspense fallback={${this._loader ? `<Loader />` : `null`}}>
+                  ${this._layout ? `<Layout Component={${i.name}} />` : `<${i.name} />`}
                 </React.Suspense>
               </Route>
-            )`
-          )}
+            `
+            )
+            .join("\n")}
         </Switch>
       )
     }
 
     createRoot(document.getElementById("root")).render(<App />);
     `;
+
     return code;
   }
 }
 
-function isTarget(p: string, options: Options) {
+function isInsidePageDirectory(p: string, options: Options) {
   return (
     p.startsWith(path.resolve(options.pageDir)) && options.extensions.some((ext) => p.endsWith(ext))
   );
 }
 
 function reservedFiles(options: Options) {
-  const { extensions, document, layout } = options;
-  return `{${[layout, document].join()}}.{${extensions.join()}}`;
+  return `{${Object.values(options.reserved)
+    .filter(Boolean)
+    .join()}}.{${options.extensions.join()}}`;
 }
 
-function normalizePathToRoute(p: string) {
+function normalizePathToRoute(p: string, o: Options) {
   const { dir, name } = path.parse(p);
-  const route = normalizeFilenameToRoute(name);
+  let route = "";
+  if (isErrorPage(name, o)) {
+    route = MATCH_ALL_ROUTE;
+  } else if (isIndexPage(name)) {
+    route = "/";
+  } else if (isDynamic(name)) {
+    route = parameterizeDynamicRoute(name);
+  } else {
+    route = name;
+  }
+
   if (route === MATCH_ALL_ROUTE) {
     return route;
   }
 
   return path.resolve(path.join("/", normalizeDirPathToRoute(dir), route));
-}
-
-const MATCH_ALL_ROUTE = "*";
-
-function normalizeFilenameToRoute(filename: string) {
-  if (isCatchAll(filename)) {
-    return MATCH_ALL_ROUTE;
-  }
-
-  if (isIndexPage(filename)) {
-    return "/";
-  }
-
-  return isDynamic(filename) ? parameterizeDynamicRoute(filename) : filename;
 }
 
 function isCatchAll(filename: string) {
@@ -175,18 +229,14 @@ function countRouteLength(p: string) {
   return path.resolve(p).split("/").filter(Boolean).length;
 }
 
-function sorter(a: string, b: string) {
-  const len = countRouteLength(a) - countRouteLength(b);
-
-  if (len !== 0) {
-    return len;
-  }
-
-  return a.localeCompare(b);
-}
-
 function sortRoutes(routes: string[]) {
-  return [...routes].sort(sorter);
+  return [...routes].sort((a, b) => {
+    const len = countRouteLength(a) - countRouteLength(b);
+    if (len !== 0) {
+      return len;
+    }
+    return a.localeCompare(b);
+  });
 }
 
 function getComponentName(filePath: string) {

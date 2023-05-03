@@ -14,8 +14,7 @@ export default function withRouter(options: UserOptions): Plugin {
     configureServer(server) {
       ctx.configureServer(server);
     },
-    async configResolved({ root }) {
-      ctx.root = root;
+    async configResolved() {
       ctx.search();
     },
     resolveId(id) {
