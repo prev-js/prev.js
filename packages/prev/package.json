@@ -29,7 +29,11 @@
     "@prevjs/vite-plugin-router": "workspace:*",
     "@types/etag": "^1.8.1",
     "@types/node": "^18.16.3",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
     "etag": "^1.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   },
@@ -38,6 +42,10 @@
     "cac": "^6.7.14",
     "vite": "^4.3.3",
     "wouter": "^2.10.1"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "tsup": {
     "entry": [
@@ -51,6 +59,10 @@
     "splitting": true,
     "sourcemap": true,
     "clean": true,
-    "dts": true
+    "dts": true,
+    "external": [
+      "react",
+      "react-dom"
+    ]
   }
 }
