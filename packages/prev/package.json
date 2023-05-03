@@ -1,6 +1,6 @@
 {
   "name": "previous.js",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The prev generation React Framework",
   "bin": {
     "prev": "./bin/cli.js"
@@ -33,6 +33,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/preset-typescript": "^7.21.5",
+    "@fabiospampinato/bump": "^2.1.2",
     "@prevjs/vite-plugin-router": "workspace:*",
     "@types/etag": "^1.8.1",
     "@types/node": "^18.16.3",
