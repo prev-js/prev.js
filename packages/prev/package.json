@@ -1,7 +1,7 @@
 {
-  "name": "prev.js",
+  "name": "previous.js",
   "version": "0.1.0",
-  "description": "Client for the Prev-Gen React Framework",
+  "description": "The prev generation React Framework",
   "bin": {
     "prev": "./bin/cli.js"
   },
@@ -21,7 +21,14 @@
       "import": "./package.json"
     }
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "react-dom",
+    "next",
+    "nextjs",
+    "prev",
+    "prevjs"
+  ],
   "author": "zoubingwu",
   "license": "MIT",
   "devDependencies": {
