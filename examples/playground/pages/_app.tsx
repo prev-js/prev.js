@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { Link } from "prev.js";
+import { Link } from "previous.js";
 
 import "./global.css";
 

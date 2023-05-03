@@ -29,7 +29,7 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.1
         version: 18.2.1
-      prev.js:
+      previous.js:
         specifier: workspace:*
         version: link:../../packages/prev
       typescript:
@@ -45,7 +45,7 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
-      prev.js:
+      previous.js:
         specifier: workspace:*
         version: link:../../packages/prev
 

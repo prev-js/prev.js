@@ -14,7 +14,7 @@ export function info() {
       yarn: ${getBinaryVersion("yarn")}
       pnpm: ${getBinaryVersion("pnpm")}
     Packages:
-      prev.js: ${getPackageVersion("prev.js")}
+      previous.js: ${getPackageVersion("previous.js")}
       react: ${getPackageVersion("react")}
       react-dom: ${getPackageVersion("react-dom")}
 `);

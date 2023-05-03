@@ -139,7 +139,7 @@ export class Context {
     const code = `
     import React from "react";
     import { createRoot } from "react-dom/client";
-    import { Route, Switch } from "prev.js";
+    import { Route, Switch } from "previous.js";
 
     ${this._loader ? `import Loader from "${this._loader}";` : ""}
     ${this._layout ? `import Layout from "${this._layout}";` : ""}

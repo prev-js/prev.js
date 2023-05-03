@@ -12,6 +12,6 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "prev.js": "workspace:*"
+    "previous.js": "workspace:*"
   }
 }

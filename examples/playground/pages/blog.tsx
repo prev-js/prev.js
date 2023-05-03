@@ -1,4 +1,4 @@
-import { Link } from "prev.js";
+import { Link } from "previous.js";
 
 export default function Blog() {
   return (
