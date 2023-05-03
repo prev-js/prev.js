@@ -1,0 +1,17 @@
+{
+  "name": "with-vanilla-js",
+  "private": true,
+  "scripts": {
+    "dev": "prev dev",
+    "build": "prev build",
+    "start": "prev start",
+    "lint": "prev lint"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "prev.js": "workspace:*"
+  }
+}
