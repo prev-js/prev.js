@@ -1,0 +1,8 @@
+{
+  "changelog": {
+    "open": false
+  },
+  "commit": {
+    "message": "Release: v[version]"
+  }
+}

@@ -6,7 +6,8 @@
     "prev": "./bin/cli.js"
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "bump": "bump -c bump.config.json"
   },
   "main": "dist/index.js",
   "module": "./dist/index.mjs",
