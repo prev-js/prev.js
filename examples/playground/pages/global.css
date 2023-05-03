@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  gap: 16px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  gap: 8px;
+}
+
+.content {
+  flex: 1;
+}
