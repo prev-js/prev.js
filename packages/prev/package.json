@@ -33,6 +33,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/preset-typescript": "^7.21.5",
+    "@fabiospampinato/bump": "^2.1.2",
     "@prevjs/vite-plugin-router": "workspace:*",
     "@types/etag": "^1.8.1",
     "@types/node": "^18.16.3",
