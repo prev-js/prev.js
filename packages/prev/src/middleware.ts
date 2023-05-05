@@ -1,4 +1,5 @@
-/// <reference types="node" />
+import fs from "node:fs";
+import path from "node:path";
 import * as http from "node:http";
 import type { ViteDevServer } from "vite";
 import getEtag from "etag";
@@ -30,8 +31,12 @@ export function createCustomIndexHtmlMiddleware(server: ViteDevServer): Connect.
     }
 
     const url = req.url && cleanUrl(req.url);
+
     if (url && req.headers["sec-fetch-dest"] === "document") {
-      let html = INDEX_HTML;
+      const indexHtml = path.resolve(server.config.root, "public/index.html");
+
+      let html = fs.existsSync(indexHtml) ? fs.readFileSync(indexHtml, "utf-8") : INDEX_HTML;
+
       html = await server.transformIndexHtml(url, html, req.originalUrl);
       return send(req, res, html, "html", {
         headers: server.config.server.headers,

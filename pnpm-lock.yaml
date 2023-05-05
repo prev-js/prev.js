@@ -36,6 +36,19 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
 
+  examples/with-index-html:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      previous.js:
+        specifier: workspace:*
+        version: link:../../packages/prev
+
   examples/with-vanilla-js:
     dependencies:
       react:
@@ -1942,7 +1955,7 @@ packages:
     dev: true
 
   /mute-stream@0.0.6:
-    resolution: {integrity: sha1-SJYrGeFp/R38JAs/HnMXYnu8R9s=}
+    resolution: {integrity: sha512-m0kBTDLF/0lgzCsPVmJSKM5xkLNX7ZAB0Q+n2DP37JMIRPVC2R4c3BdO6x++bXFKftbhvSfKgwxAexME+BRDRw==}
     dev: true
 
   /mute-stream@0.0.7:
