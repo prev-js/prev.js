@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { build as viteBuild } from "vite";
+import { InlineConfig, loadConfigFromFile, mergeConfig, build as viteBuild } from "vite";
 import withReact from "@vitejs/plugin-react";
 import withRouter from "@prevjs/vite-plugin-router";
 import { INDEX_HTML } from "./middleware";
@@ -12,7 +12,7 @@ export async function build(root = process.cwd()) {
   const entry = path.resolve(root, "public/index.html");
   const entryExist = fs.existsSync(entry);
 
-  await viteBuild({
+  let config: InlineConfig = {
     configFile: false,
     root,
     mode: "production",
@@ -24,14 +24,12 @@ export async function build(root = process.cwd()) {
           {
             name: "custom-index-html-entry",
             resolveId(id) {
-              console.log("resolveId id: ", id);
               if (id === ENTRY_NAME) {
                 return id;
               }
               return null;
             },
             load(id) {
-              console.log("load id: ", id);
               if (id === ENTRY_NAME) {
                 return entryExist ? fs.readFileSync(entry, "utf-8") : INDEX_HTML;
               }
@@ -43,5 +41,21 @@ export async function build(root = process.cwd()) {
       },
     },
     plugins: [withRouter({ root }), withReact()],
-  });
+  };
+
+  const loadedConfig = await loadConfigFromFile(
+    {
+      mode: config.mode!,
+      command: "serve",
+      ssrBuild: false,
+    },
+    undefined,
+    root
+  );
+
+  if (loadedConfig) {
+    config = mergeConfig(loadedConfig.config, config);
+  }
+
+  await viteBuild(config);
 }
