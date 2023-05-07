@@ -139,7 +139,7 @@ export class Context {
     const code = `
     import React from "react";
     import { createRoot } from "react-dom/client";
-    import { Route, Switch } from "previous.js";
+    import { Route, Switch } from "previous.js/router";
 
     ${this._loader ? `import Loader from "${this._loader}";` : ""}
     ${this._layout ? `import Layout from "${this._layout}";` : ""}
@@ -153,7 +153,7 @@ export class Context {
               (i) => `
               <Route path="${i.route === MATCH_ALL_ROUTE ? `/:all*` : i.route}">
                 <React.Suspense fallback={${this._loader ? `<Loader />` : `null`}}>
-                  ${this._layout ? `<Layout Component={${i.name}} />` : `<${i.name} />`}
+                  ${this._layout ? `<Layout>${`<${i.name} />`}</Layout>` : `<${i.name} />`}
                 </React.Suspense>
               </Route>
             `
@@ -200,10 +200,6 @@ function normalizePathToRoute(p: string, o: Options) {
   }
 
   return path.resolve(path.join("/", normalizeDirPathToRoute(dir), route));
-}
-
-function isCatchAll(filename: string) {
-  return /^\[\.{3}/.test(filename);
 }
 
 function isDynamic(filename: string) {

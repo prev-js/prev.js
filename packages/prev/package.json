@@ -17,6 +17,16 @@
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
+    "./router": {
+      "types": "./dist/export-router.d.ts",
+      "require": "./dist/export-router.js",
+      "import": "./dist/export-router.mjs"
+    },
+    "./vite": {
+      "types": "./dist/export-vite.d.ts",
+      "require": "./dist/export-vite.js",
+      "import": "./dist/export-vite.mjs"
+    },
     "./package.json": {
       "require": "./package.json",
       "import": "./package.json"
@@ -58,8 +68,9 @@
   },
   "tsup": {
     "entry": [
-      "src/index.ts",
-      "src/cli.ts"
+      "src/cli.ts",
+      "src/export-router.ts",
+      "src/export-vite.ts"
     ],
     "format": [
       "esm",

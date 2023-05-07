@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { Link } from "previous.js";
+import { Link } from "previous.js/router";
 
 import "./global.css";
 
