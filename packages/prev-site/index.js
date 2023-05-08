@@ -28,6 +28,8 @@ shiki
   <body>${html}</body>
 </html>`;
 
-    fs.writeFileSync("index.html", out);
+    fs.mkdirSync("dist");
+    fs.writeFileSync("dist/index.html", out);
+    fs.copyFileSync("style.css", "dist/style.css");
     console.log("done");
   });

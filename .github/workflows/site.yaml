@@ -3,7 +3,7 @@ name: gh-pages
 on:
   push:
     branches: ["master"]
-    paths: ["packages/prev-site"]
+    paths: ["packages/prev-site/**"]
   workflow_dispatch:
 
 permissions:
@@ -36,4 +36,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: packages/prev-site # The folder the action should deploy.
+          folder: packages/prev-site/dist # The folder the action should deploy.
