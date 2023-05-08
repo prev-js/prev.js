@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Previous.js</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body><h1>Previous.js</h1>
+<p>Previous.js is a lightweight and flexible React framework for minimalists that simplifies the process of building modern web applications with client-side rendering (CSR). It provides Next.js-like routing support and uses Vite as the build tool for a great development experience. With Previous.js, you can easily create a good old single page applications without worrying about the complexity of SSR/SSG/RSC. It's a great choice for developers who doesn't need server-rendered html like when building prototypes, or web apps for internal usage, or electron/tauri apps.</p>
+<p><em>SPAs never die, long live SPAs!</em></p>
+<h2>Getting Started</h2>
+<h3>Installation</h3>
+<p>You can use previous.js by using our project template when starting a new project or manually install it from npm as a dev dependency in an existing one.</p>
+<h4>Scaffolding a new project</h4>
+<pre class="shiki nord" style="background-color: #2e3440ff" tabindex="0"><code><span class="line"><span style="color: #88C0D0">npm</span><span style="color: #D8DEE9FF"> </span><span style="color: #A3BE8C">create</span><span style="color: #D8DEE9FF"> </span><span style="color: #A3BE8C">prev@latest</span></span>
+<span class="line"></span></code></pre>
+<h4>Manually Install</h4>
+<pre class="shiki nord" style="background-color: #2e3440ff" tabindex="0"><code><span class="line"><span style="color: #88C0D0">npm</span><span style="color: #D8DEE9FF"> </span><span style="color: #A3BE8C">install</span><span style="color: #D8DEE9FF"> </span><span style="color: #A3BE8C">previous.js</span><span style="color: #D8DEE9FF"> </span><span style="color: #A3BE8C">-D</span></span>
+<span class="line"></span></code></pre>
+<h4>Available Commands</h4>
+<pre class="shiki nord" style="background-color: #2e3440ff" tabindex="0"><code><span class="line"><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">&quot;</span><span style="color: #8FBCBB">scripts</span><span style="color: #ECEFF4">&quot;</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">&quot;</span><span style="color: #8FBCBB">dev</span><span style="color: #ECEFF4">&quot;</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&quot;</span><span style="color: #A3BE8C">prev dev</span><span style="color: #ECEFF4">&quot;</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #616E88">// start dev server</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">&quot;</span><span style="color: #8FBCBB">build</span><span style="color: #ECEFF4">&quot;</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&quot;</span><span style="color: #A3BE8C">prev build</span><span style="color: #ECEFF4">&quot;</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #616E88">// build for production</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">&quot;</span><span style="color: #8FBCBB">start</span><span style="color: #ECEFF4">&quot;</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&quot;</span><span style="color: #A3BE8C">prev start</span><span style="color: #ECEFF4">&quot;</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #616E88">// locally preview production build</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">&quot;</span><span style="color: #8FBCBB">lint</span><span style="color: #ECEFF4">&quot;</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&quot;</span><span style="color: #A3BE8C">prev lint</span><span style="color: #ECEFF4">&quot;</span><span style="color: #D8DEE9FF"> </span><span style="color: #616E88">// run eslint</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span></code></pre>
+<h2>Development</h2>
+<h3>Routing</h3>
+<p>Previous.js has a file-system based router similar to the Page Router in Next.js. All files in the <code>pages</code> directory are automatically available as a route.</p>
+<h4>Index routes</h4>
+<ul>
+<li>pages/index.js → /</li>
+<li>pages/blog/index.js → /blog</li>
+</ul>
+<h4>_app</h4>
+<h4>_error</h4>
+<h4>_loader</h4>
+<h4>_og</h4>
+<h3>Styling</h3>
+<h3>Configuring</h3>
+<h2>Building Your App</h2>
+<center>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">someone should build a client-only framework (even no SSG) that integrates routing, fetching, and bundling just for the sake of it. would let us skip all the conversations about “but what if i don’t want SSG/SSR” and at least squeeze the best client perf by default.</p>&mdash; дэн (@dan_abramov) <a href="https://twitter.com/dan_abramov/status/1648733537741176852?ref_src=twsrc%5Etfw">April 19, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</center>
+</body>
+</html>
