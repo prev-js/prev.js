@@ -1,0 +1,21 @@
+{
+  "name": "with-unocss",
+  "private": true,
+  "scripts": {
+    "dev": "prev dev",
+    "build": "prev build",
+    "start": "prev start",
+    "lint": "prev lint"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
+    "previous.js": "workspace:*",
+    "typescript": "^5.0.4",
+    "unocss": "^0.51.12"
+  }
+}
