@@ -12,9 +12,9 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "previous.js": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.1",
+    "previous.js": "workspace:*",
     "typescript": "^5.0.4"
   }
 }

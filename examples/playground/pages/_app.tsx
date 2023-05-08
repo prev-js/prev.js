@@ -1,9 +1,9 @@
-import { ComponentType } from "react";
+import { ReactNode } from "react";
 import { Link } from "previous.js/router";
 
 import "./global.css";
 
-export default function App({ Component }: { Component: ComponentType<{}> }) {
+export default function App({ children }: { children: ReactNode }) {
   return (
     <div className="app">
       <div className="nav">
@@ -13,9 +13,7 @@ export default function App({ Component }: { Component: ComponentType<{}> }) {
           </Link>
         ))}
       </div>
-      <div className="content">
-        <Component />
-      </div>
+      <div className="content">{children}</div>
     </div>
   );
 }
