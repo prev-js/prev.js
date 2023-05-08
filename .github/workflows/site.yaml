@@ -1,0 +1,35 @@
+name: Test
+
+on:
+  push:
+    branches: ["master"]
+    paths: ["packages/prev-site"]
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm --filter @prevjs/site build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: packages/prev-site # The folder the action should deploy.
