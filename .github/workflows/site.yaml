@@ -4,6 +4,7 @@ on:
   push:
     branches: ["master"]
     paths: ["packages/prev-site"]
+  workflow_dispatch:
 
 jobs:
   Test:
