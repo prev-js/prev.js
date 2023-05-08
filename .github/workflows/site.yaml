@@ -6,6 +6,9 @@ on:
     paths: ["packages/prev-site"]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   Deploy:
     runs-on: ubuntu-latest
