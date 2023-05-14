@@ -5,14 +5,20 @@ import { InlineConfig, loadConfigFromFile, mergeConfig, build as viteBuild } fro
 import withReact from "@vitejs/plugin-react";
 import withRouter from "@prevjs/vite-plugin-router";
 import { INDEX_HTML } from "./middleware";
+import { loadConfig } from "./utils";
 
 const ENTRY_NAME = "index.html";
 
-export async function build(root = process.cwd()) {
+interface BuildCommandOption {
+  config?: string;
+}
+
+export async function build(root = process.cwd(), options: BuildCommandOption) {
   const entry = path.resolve(root, "public/index.html");
   const entryExist = fs.existsSync(entry);
+  const { data: config } = await loadConfig(root, options.config);
 
-  let config: InlineConfig = {
+  let viteConfig: InlineConfig = {
     configFile: false,
     root,
     mode: "production",
@@ -40,12 +46,12 @@ export async function build(root = process.cwd()) {
         ],
       },
     },
-    plugins: [withRouter({ root }), withReact()],
+    plugins: [withRouter({ root, splitting: config?.splitting }), withReact()],
   };
 
-  const loadedConfig = await loadConfigFromFile(
+  const loadedViteConfig = await loadConfigFromFile(
     {
-      mode: config.mode!,
+      mode: viteConfig.mode!,
       command: "serve",
       ssrBuild: false,
     },
@@ -53,9 +59,9 @@ export async function build(root = process.cwd()) {
     root
   );
 
-  if (loadedConfig) {
-    config = mergeConfig(loadedConfig.config, config);
+  if (loadedViteConfig) {
+    viteConfig = mergeConfig(loadedViteConfig.config, viteConfig);
   }
 
-  await viteBuild(config);
+  await viteBuild(viteConfig);
 }

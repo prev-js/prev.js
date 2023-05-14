@@ -9,6 +9,7 @@ interface Options {
   extensions: string[];
   root: string;
   pageDir: string;
+  splitting: boolean;
   reserved: {
     ducoment: string;
     layout: string;
@@ -42,6 +43,7 @@ export class Context {
     root: ".",
     extensions: ["js", "jsx", "ts", "tsx"],
     pageDir: "pages",
+    splitting: true,
     reserved: {
       // not supported
       ducoment: "",
@@ -136,37 +138,56 @@ export class Context {
       return routeObj;
     });
 
-    const code = `
-    import React from "react";
-    import { createRoot } from "react-dom/client";
-    import { Route, Switch } from "previous.js/router";
+    const codes = [
+      'import React from "react";',
+      'import { createRoot } from "react-dom/client";',
+      'import { Route, Switch } from "previous.js/router";',
+    ];
 
-    ${this._loader ? `import Loader from "${this._loader}";` : ""}
-    ${this._layout ? `import Layout from "${this._layout}";` : ""}
-    ${routes.map((i) => `const ${i.name} = React.lazy(() => import("${i.path}"));`).join("\n    ")}
-
-    function App() {
-      return (
-        <Switch>
-          ${routes
-            .map(
-              (i) => `
-              <Route path="${i.route === MATCH_ALL_ROUTE ? `/:all*` : i.route}">
-                <React.Suspense fallback={${this._loader ? `<Loader />` : `null`}}>
-                  ${this._layout ? `<Layout>${`<${i.name} />`}</Layout>` : `<${i.name} />`}
-                </React.Suspense>
-              </Route>
-            `
-            )
-            .join("\n")}
-        </Switch>
-      )
+    if (this._loader) {
+      codes.push(`import Loader from "${this._loader}";`);
+    }
+    if (this._layout) {
+      codes.push(`import Layout from "${this._layout}";`);
     }
 
-    createRoot(document.getElementById("root")).render(<App />);
-    `;
+    const { splitting } = this.options;
+    if (splitting) {
+      codes.push(...routes.map((i) => `const ${i.name} = React.lazy(() => import("${i.path}"));`));
+    } else {
+      codes.push(...routes.map((i) => `import ${i.name} from "${i.path}"`));
+    }
 
-    return code;
+    codes.push(
+      ...[
+        "function App() {",
+        "  return (",
+        "    <Switch>",
+        ...routes
+          .map((i) =>
+            splitting
+              ? [
+                  `<Route path="${i.route === MATCH_ALL_ROUTE ? `/:all*` : i.route}">`,
+                  `  <React.Suspense fallback={${this._loader ? `<Loader />` : `null`}}>`,
+                  `    ${this._layout ? `<Layout>${`<${i.name} />`}</Layout>` : `<${i.name} />`}`,
+                  `  </React.Suspense>`,
+                  `</Route>`,
+                ]
+              : [
+                  `<Route path="${i.route === MATCH_ALL_ROUTE ? `/:all*` : i.route}">`,
+                  `    ${this._layout ? `<Layout>${`<${i.name} />`}</Layout>` : `<${i.name} />`}`,
+                  `</Route>`,
+                ]
+          )
+          .flat(),
+        "    </Switch>",
+        "  )",
+        "}",
+        `createRoot(document.getElementById("root")).render(<App />);`,
+      ]
+    );
+
+    return codes.join("\n");
   }
 }
 

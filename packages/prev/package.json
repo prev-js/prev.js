@@ -51,14 +51,18 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.1",
     "etag": "^1.8.1",
+    "joycon": "^3.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "strip-json-comments": "^5.0.0",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.0.0",
+    "bundle-require": "^4.0.1",
     "cac": "^6.7.14",
+    "esbuild": "^0.17.5",
     "vite": "^4.3.3",
     "wouter": "^2.10.1"
   },
@@ -68,6 +72,7 @@
   },
   "tsup": {
     "entry": [
+      "src/index.ts",
       "src/cli.ts",
       "src/export-router.ts",
       "src/export-vite.ts"

@@ -21,6 +21,7 @@ cli
 
 cli
   .command("build [dir]", "Build the application for production deployment")
+  .option("-c, --config <file>", "[string] use specified config file")
   .usage(
     "build [dir]\n\n  [dir] represents the directory of the application. By default, the current directory will be used."
   )

@@ -3,15 +3,18 @@ import { createServer, loadConfigFromFile, mergeConfig, InlineConfig } from "vit
 import withReact from "@vitejs/plugin-react";
 import withRouter from "@prevjs/vite-plugin-router";
 import { createCustomIndexHtmlMiddleware } from "./middleware";
+import { loadConfig } from "./utils";
 
 interface DevCommandOption {
   port: number;
   host: string;
-  config: string;
+  config?: string;
 }
 
 export async function dev(root = process.cwd(), options: DevCommandOption) {
-  let config: InlineConfig = {
+  const { data: config } = await loadConfig(root, options.config);
+
+  let viteConfig: InlineConfig = {
     configFile: false,
     root,
     mode: "development",
@@ -20,12 +23,12 @@ export async function dev(root = process.cwd(), options: DevCommandOption) {
       host: options?.host,
     },
     appType: "custom",
-    plugins: [withRouter({ root }), withReact()],
+    plugins: [withRouter({ root, splitting: config?.splitting }), withReact()],
   };
 
   const loadedConfig = await loadConfigFromFile(
     {
-      mode: config.mode!,
+      mode: viteConfig.mode!,
       command: "serve",
       ssrBuild: false,
     },
@@ -34,10 +37,10 @@ export async function dev(root = process.cwd(), options: DevCommandOption) {
   );
 
   if (loadedConfig) {
-    config = mergeConfig(loadedConfig.config, config);
+    viteConfig = mergeConfig(loadedConfig.config, viteConfig);
   }
 
-  const server = await createServer(config);
+  const server = await createServer(viteConfig);
 
   server.middlewares.use(createCustomIndexHtmlMiddleware(server));
 
