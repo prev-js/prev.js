@@ -28,7 +28,9 @@ shiki
   <body>${html}</body>
 </html>`;
 
-    fs.mkdirSync("dist");
+    if (!fs.existsSync("dist")) {
+      fs.mkdirSync("dist");
+    }
     fs.writeFileSync("dist/index.html", out);
     fs.copyFileSync("style.css", "dist/style.css");
     console.log("done");
