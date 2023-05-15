@@ -41,8 +41,14 @@ export async function dev(root = process.cwd(), options: DevCommandOption) {
   }
 
   const server = await createServer(viteConfig);
-
   server.middlewares.use(createCustomIndexHtmlMiddleware(server));
+
+  ["SIGINT", "SIGTERM"].forEach((sig) => {
+    process.once(sig, function () {
+      server.close();
+      process.exit();
+    });
+  });
 
   await server.listen();
   server.printUrls();
