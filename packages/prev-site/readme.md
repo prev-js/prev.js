@@ -2,15 +2,15 @@
 
 ### _A client only React framework, SPAs never die, long live SPAs!_
 
-Previous.js is a lightweight and flexible React framework for minimalists that simplifies the process of building modern web applications with client-side rendering (CSR).It provides Next.js-like routing support and uses Vite as the build tool for a great development experience.
+[Previous.js](https://github.com/prev-js/prev.js) is a lightweight and flexible React framework for minimalist that simplifies the process of building modern web applications with client-side rendering (CSR).It provides Next.js-like routing support and uses Vite as the build tool for better development experience.
 
-With Previous.js, you can easily create a good old single page application without worrying about the complexity of SSR/SSG/RSC. It's a great choice for developers who doesn't need server-rendered html like when building prototypes, or web apps for internal usage, or in electron/tauri.
+With Previous.js, you can easily create a good old single page application without worrying about the complexity of SSR/SSG/RSC/`use client`/`use server`. It's a great choice for developers who doesn't need server-rendered html like when building quick prototypes, web apps for internal usage or running in Electron/Tauri or any other webviews.
 
 ## Getting Started
 
 ### Installation
 
-You can use previous.js by using our template when starting a new project or manually install it from npm as a dev dependency in an existing one.
+You can use previous.js by using our templates when starting a new project or manually install it from npm as a dev dependency in an existing one.
 
 #### Scaffolding a new project
 
@@ -63,11 +63,17 @@ export default function App({ children }) {
 
 #### \_error
 
-You can create a `_error.jsx` file for 404 page, but since this is a client-side rendering app, an index.html and all related javascript will always be downloaded the show this page according to the route matching result.
+You can create a `_error.jsx` file for the 404 page, but since this is a client-side rendering app, the index.html and all related javascript will always be downloaded before calculating the route matching and showing this page.
+
+```ts
+export default function Error() {
+  return <div>Not found...</div>;
+}
+```
 
 #### \_loader
 
-By default we split every page component into different chunk so it will need a loading indicator during route change when trying to render that page for the first time. By default this is `null`, so users will see a blank screen.
+By default we split every page component into different chunk, so for better user experience, it will need a loading indicator during route change when trying to render that page for the first time. By default this is `null`.
 
 It is highly recommended to write your own one by creating a `_loader.jsx` under the `pages` directory.
 
@@ -77,21 +83,23 @@ export default function Loader() {
 }
 ```
 
-Or your turn it off in the config with `splitting: false`, then you won't need this anymore.
+Or your can turn this behavior off in the config with `splitting: false`, then you won't need this anymore, but this will also bundle all your javascript into one big file.
 
 ### Configuring
 
-You can customize configurations via:
+You can customize configurations with a config file in your root directory via:
 
 - prev.config.ts
 - prev.config.js
 - prev.config.cjs
 - prev.config.json
+
+or:
+
 - `prev` property in your package.json
+- a custom filename using the `--config` flag, for example: `prev dev --config custom.config.ts`.
 
-Or specify a custom filename using the --config flag, for example: `prev dev --config custom.config.ts`.
-
-For typescript support in your config file, you can use the `defineConfig` function:
+For better typescript support in your config file, you can use the `defineConfig` function:
 
 ```ts
 import { defineConfig } from "previous.js";
@@ -101,8 +109,8 @@ export default defineConfig({
 });
 ```
 
-## Building Your App
+If you want to customize the behavior of Vite or Eslint, you can create your own `vite.config.js` and `eslint.confg.js`.
 
-<center>
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">someone should build a client-only framework (even no SSG) that integrates routing, fetching, and bundling just for the sake of it. would let us skip all the conversations about “but what if i don’t want SSG/SSR” and at least squeeze the best client perf by default.</p>&mdash; дэн (@dan_abramov) <a href="https://twitter.com/dan_abramov/status/1648733537741176852?ref_src=twsrc%5Etfw">April 19, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</center>
+## Deployment
+
+You can run `prev build` to create a production build for you app in the `build` direcory, they are all static files so you can
