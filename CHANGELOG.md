@@ -1,3 +1,7 @@
+### Version 0.4.0
+
+- fix: typings
+
 ### Version 0.3.0
 
 - Add bump script

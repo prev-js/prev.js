@@ -3,6 +3,10 @@
     "open": false
   },
   "commit": {
+    "enabled": false,
     "message": "Release: v[version]"
+  },
+  "tag": {
+    "enabled": true
   }
 }
