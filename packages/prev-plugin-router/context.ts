@@ -165,19 +165,14 @@ export class Context {
         "    <Switch>",
         ...routes
           .map((i) =>
-            splitting
-              ? [
-                  `<Route path="${i.route === MATCH_ALL_ROUTE ? `/:all*` : i.route}">`,
-                  `  <React.Suspense fallback={${this._loader ? `<Loader />` : `null`}}>`,
-                  `    ${this._layout ? `<Layout>${`<${i.name} />`}</Layout>` : `<${i.name} />`}`,
-                  `  </React.Suspense>`,
-                  `</Route>`,
-                ]
-              : [
-                  `<Route path="${i.route === MATCH_ALL_ROUTE ? `/:all*` : i.route}">`,
-                  `    ${this._layout ? `<Layout>${`<${i.name} />`}</Layout>` : `<${i.name} />`}`,
-                  `</Route>`,
-                ]
+            [
+              `<Route path="${i.route === MATCH_ALL_ROUTE ? `/:all*` : i.route}">`,
+              // prettier-ignore
+              splitting ? `  <React.Suspense fallback={${this._loader ? `<Loader />` : `null`}}>` : "",
+              `    ${this._layout ? `<Layout>${`<${i.name} />`}</Layout>` : `<${i.name} />`}`,
+              splitting ? `  </React.Suspense>` : "",
+              `</Route>`,
+            ].filter(Boolean)
           )
           .flat(),
         "    </Switch>",
