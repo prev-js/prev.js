@@ -10,11 +10,11 @@
   </head>
   <body><h1>Previous.js</h1>
 <h3><em>A client only React framework, SPAs never die, long live SPAs!</em></h3>
-<p>Previous.js is a lightweight and flexible React framework for minimalists that simplifies the process of building modern web applications with client-side rendering (CSR).It provides Next.js-like routing support and uses Vite as the build tool for a great development experience.</p>
-<p>With Previous.js, you can easily create a good old single page application without worrying about the complexity of SSR/SSG/RSC. It's a great choice for developers who doesn't need server-rendered html like when building prototypes, or web apps for internal usage, or in electron/tauri.</p>
+<p><a href="https://github.com/prev-js/prev.js">Previous.js</a> is a lightweight and flexible React framework for minimalist that simplifies the process of building modern web applications with client-side rendering (CSR).It provides Next.js-like routing support and uses Vite as the build tool for better development experience.</p>
+<p>With Previous.js, you can easily create a good old single page application without worrying about the complexity of SSR/SSG/RSC/<code>use client</code>/<code>use server</code>. It's a great choice for developers who doesn't need server-rendered html like when building quick prototypes, web apps for internal usage or running in Electron/Tauri or any other webviews.</p>
 <h2>Getting Started</h2>
 <h3>Installation</h3>
-<p>You can use previous.js by using our template when starting a new project or manually install it from npm as a dev dependency in an existing one.</p>
+<p>You can use previous.js by using our templates when starting a new project or manually install it from npm as a dev dependency in an existing one.</p>
 <h4>Scaffolding a new project</h4>
 <pre class="shiki nord" style="background-color: #2e3440ff" tabindex="0"><code><span class="line"><span style="color: #88C0D0">npm</span><span style="color: #D8DEE9FF"> </span><span style="color: #A3BE8C">create</span><span style="color: #D8DEE9FF"> </span><span style="color: #A3BE8C">prev@latest</span></span>
 <span class="line"></span></code></pre>
@@ -48,35 +48,41 @@
 <span class="line"><span style="color: #ECEFF4">}</span></span>
 <span class="line"></span></code></pre>
 <h4>_error</h4>
-<p>You can create a <code>_error.jsx</code> file for 404 page, but since this is a client-side rendering app, an index.html and all related javascript will always be downloaded the show this page according to the route matching result.</p>
+<p>You can create a <code>_error.jsx</code> file for the 404 page, but since this is a client-side rendering app, the index.html and all related javascript will always be downloaded before calculating the route matching and showing this page.</p>
+<pre class="shiki nord" style="background-color: #2e3440ff" tabindex="0"><code><span class="line"><span style="color: #81A1C1">export</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">default</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Error</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">return</span><span style="color: #D8DEE9FF"> &lt;</span><span style="color: #8FBCBB">div</span><span style="color: #D8DEE9FF">&gt;</span><span style="color: #D8DEE9">Not</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">found</span><span style="color: #81A1C1">...&lt;/</span><span style="color: #D8DEE9">div</span><span style="color: #81A1C1">&gt;;</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span></code></pre>
 <h4>_loader</h4>
-<p>By default we split every page component into different chunk so it will need a loading indicator during route change when trying to render that page for the first time. By default this is <code>null</code>, so users will see a blank screen.</p>
+<p>By default we split every page component into different chunk, so for better user experience, it will need a loading indicator during route change when trying to render that page for the first time. By default this is <code>null</code>.</p>
 <p>It is highly recommended to write your own one by creating a <code>_loader.jsx</code> under the <code>pages</code> directory.</p>
 <pre class="shiki nord" style="background-color: #2e3440ff" tabindex="0"><code><span class="line"><span style="color: #81A1C1">export</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">default</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Loader</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
 <span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">return</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&lt;div&gt;</span><span style="color: #D8DEE9FF">Loading...</span><span style="color: #81A1C1">&lt;/div&gt;;</span></span>
 <span class="line"><span style="color: #ECEFF4">}</span></span>
 <span class="line"></span></code></pre>
-<p>Or your turn it off in the config with <code>splitting: false</code>, then you won't need this anymore.</p>
+<p>Or your can turn this behavior off in the config with <code>splitting: false</code>, then you won't need this anymore, but this will also bundle all your javascript into one big file.</p>
 <h3>Configuring</h3>
-<p>You can customize configurations via:</p>
+<p>You can customize configurations with a config file in your root directory via:</p>
 <ul>
 <li>prev.config.ts</li>
 <li>prev.config.js</li>
 <li>prev.config.cjs</li>
 <li>prev.config.json</li>
-<li><code>prev</code> property in your package.json</li>
 </ul>
-<p>Or specify a custom filename using the --config flag, for example: <code>prev dev --config custom.config.ts</code>.</p>
-<p>For typescript support in your config file, you can use the <code>defineConfig</code> function:</p>
+<p>or:</p>
+<ul>
+<li><code>prev</code> property in your package.json</li>
+<li>a custom filename using the <code>--config</code> flag, for example: <code>prev dev --config custom.config.ts</code>.</li>
+</ul>
+<p>For better typescript support in your config file, you can use the <code>defineConfig</code> function:</p>
 <pre class="shiki nord" style="background-color: #2e3440ff" tabindex="0"><code><span class="line"><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">defineConfig</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">from</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&quot;</span><span style="color: #A3BE8C">previous.js</span><span style="color: #ECEFF4">&quot;</span><span style="color: #81A1C1">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color: #81A1C1">export</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">default</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">defineConfig</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
 <span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">splitting</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span><span style="color: #ECEFF4">,</span></span>
 <span class="line"><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
 <span class="line"></span></code></pre>
-<h2>Building Your App</h2>
-<center>
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">someone should build a client-only framework (even no SSG) that integrates routing, fetching, and bundling just for the sake of it. would let us skip all the conversations about “but what if i don’t want SSG/SSR” and at least squeeze the best client perf by default.</p>&mdash; дэн (@dan_abramov) <a href="https://twitter.com/dan_abramov/status/1648733537741176852?ref_src=twsrc%5Etfw">April 19, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</center>
+<p>If you want to customize the behavior of Vite or Eslint, you can create your own <code>vite.config.js</code> and <code>eslint.confg.js</code>.</p>
+<h2>Deployment</h2>
+<p>You can run <code>prev build</code> to create a production build for you app in the <code>build</code> direcory, they are all static files so you can</p>
 </body>
 </html>

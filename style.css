@@ -23,7 +23,7 @@ body {
 pre {
   overflow: auto;
   overflow-wrap: break-word;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
   white-space: pre-wrap;
