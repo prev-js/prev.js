@@ -113,4 +113,4 @@ If you want to customize the behavior of Vite or Eslint, you can create your own
 
 ## Deployment
 
-You can run `prev build` to create a production build for you app in the `build` direcory, they are all static files so you can
+Run `prev build` to create a production build for you app in the `build` direcory, they are all static files so you can use whatever platform you like for the hosting.
