@@ -29,13 +29,16 @@ npm install previous.js -D
 ```json
 {
   "scripts": {
-    "dev": "prev dev", // start dev server
-    "build": "prev build", // build for production
-    "start": "prev start", // locally preview production build
-    "lint": "prev lint" // run eslint
+    "dev": "prev dev",
+    "build": "prev build",
+    "start": "prev start"
   }
 }
 ```
+
+- `prev dev`: start dev server
+- `prev build`: build for production
+- `prev start`: run a server for locally preview the production build
 
 ## Development
 
