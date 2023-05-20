@@ -1,0 +1,11 @@
+{
+  "name": "@prevjs/eslint-config",
+  "description": "ESLint configuration used by previous.js",
+  "main": "index.js",
+  "dependencies": {
+    "eslint-config-react-app": "latest"
+  },
+  "peerDependencies": {
+    "eslint": ">=8.0.0"
+  }
+}

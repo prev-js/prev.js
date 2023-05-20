@@ -36,16 +36,6 @@ cli
   .option("--host [string]", "Specify which IP addresses the server should listen on")
   .action(start);
 
-cli
-  .command("lint [dir]", "Run eslint check on every file.")
-  .usage(
-    "lint [dir]\n\n  [dir] represents the directory of the application. By default, the current directory will be used."
-  )
-  .option("--fix", "Automatically fix problems", {
-    default: false,
-  })
-  .action(lint);
-
 cli.command("info", "Print env info like system info and versions.").action(info);
 
 cli.help();
