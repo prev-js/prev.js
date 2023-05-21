@@ -52,7 +52,7 @@ export async function build(root = process.cwd(), options: BuildCommandOption) {
   const loadedViteConfig = await loadConfigFromFile(
     {
       mode: viteConfig.mode!,
-      command: "serve",
+      command: "build",
       ssrBuild: false,
     },
     undefined,
