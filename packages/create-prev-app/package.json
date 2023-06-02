@@ -1,0 +1,10 @@
+{
+  "name": "create-prev-app",
+  "version": "0.1.0",
+  "bin": {
+    "create-prev-app": "./bin/cli.js"
+  },
+  "dependencies": {
+    "prompts": "^2.4.2"
+  }
+}
