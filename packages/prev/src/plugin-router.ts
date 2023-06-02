@@ -1,10 +1,11 @@
-import type { Plugin } from "vite";
-import { transformWithEsbuild, ViteDevServer } from "vite";
+import type { Plugin, ViteDevServer } from "vite";
+import { transformWithEsbuild } from "vite";
 import fs from "node:fs";
 import path from "node:path";
 import fg from "fast-glob";
 import capitalize from "just-capitalize";
 import camelCase from "just-camel-case";
+import semver from "semver";
 import { getInstalledPackageVersion } from "./utils";
 
 const MODULE_ID_VIRTUAL = "virtual:router";
@@ -142,9 +143,14 @@ export class Context {
       return routeObj;
     });
 
+    const reactVersion = getInstalledPackageVersion("react");
+    const isReact18 = semver.gte(reactVersion, "18.0.0");
+
     const codes = [
       'import React from "react";',
-      'import { createRoot } from "react-dom/client";',
+      isReact18
+        ? 'import { createRoot } from "react-dom/client";'
+        : 'import { render } from "react-dom";',
       'import { Route, Switch } from "previous.js/router";',
     ];
 
@@ -185,8 +191,11 @@ export class Context {
       ]
     );
 
-    const reactVersion = getInstalledPackageVersion("react");
-    codes.push(`createRoot(document.getElementById("root")).render(<App />);`);
+    if (isReact18) {
+      codes.push(`createRoot(document.getElementById("root")).render(<App />);`);
+    } else {
+      codes.push(`render(<App />, document.getElementById("root"));`);
+    }
 
     return codes.join("\n");
   }
