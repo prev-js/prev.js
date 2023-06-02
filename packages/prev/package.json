@@ -45,7 +45,6 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.21.5",
     "@fabiospampinato/bump": "^2.1.2",
-    "@prevjs/vite-plugin-router": "workspace:*",
     "@types/etag": "^1.8.1",
     "@types/node": "^18.16.3",
     "@types/react": "^18.2.0",
@@ -63,7 +62,10 @@
     "bundle-require": "^4.0.1",
     "cac": "^6.7.14",
     "esbuild": "^0.17.5",
-    "vite": "^4.3.3",
+    "fast-glob": "^3.2.12",
+    "just-camel-case": "^6.2.0",
+    "just-capitalize": "^3.2.0",
+    "vite": "^4.3.9",
     "wouter": "^2.10.1"
   },
   "peerDependencies": {

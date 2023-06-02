@@ -3,7 +3,7 @@ import path from "node:path";
 import process from "node:process";
 import { InlineConfig, loadConfigFromFile, mergeConfig, build as viteBuild } from "vite";
 import withReact from "@vitejs/plugin-react";
-import withRouter from "@prevjs/vite-plugin-router";
+import { withRouter } from "./plugin-router";
 import { INDEX_HTML } from "./middleware";
 import { loadConfig } from "./utils";
 

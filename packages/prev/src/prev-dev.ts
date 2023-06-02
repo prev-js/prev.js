@@ -1,7 +1,7 @@
 import process from "node:process";
 import { createServer, loadConfigFromFile, mergeConfig, InlineConfig } from "vite";
 import withReact from "@vitejs/plugin-react";
-import withRouter from "@prevjs/vite-plugin-router";
+import { withRouter } from "./plugin-router";
 import { createCustomIndexHtmlMiddleware } from "./middleware";
 import { loadConfig } from "./utils";
 

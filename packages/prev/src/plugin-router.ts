@@ -1,9 +1,13 @@
+import type { Plugin } from "vite";
+import { transformWithEsbuild, ViteDevServer } from "vite";
 import fs from "node:fs";
 import path from "node:path";
 import fg from "fast-glob";
-import { ViteDevServer } from "vite";
 import capitalize from "just-capitalize";
 import camelCase from "just-camel-case";
+import { getInstalledPackageVersion } from "./utils";
+
+const MODULE_ID_VIRTUAL = "virtual:router";
 
 interface Options {
   extensions: string[];
@@ -178,9 +182,11 @@ export class Context {
         "    </Switch>",
         "  )",
         "}",
-        `createRoot(document.getElementById("root")).render(<App />);`,
       ]
     );
+
+    const reactVersion = getInstalledPackageVersion("react");
+    codes.push(`createRoot(document.getElementById("root")).render(<App />);`);
 
     return codes.join("\n");
   }
@@ -267,4 +273,52 @@ function getComponentName(filePath: string) {
   }, "");
 
   return name;
+}
+
+export function withRouter(options: UserOptions): Plugin {
+  const ctx: Context = new Context(options);
+
+  return {
+    name: "@prevjs/vite-plugin-router",
+    enforce: "pre",
+    configureServer(server) {
+      ctx.configureServer(server);
+    },
+    async configResolved() {
+      ctx.search();
+    },
+    resolveId(id) {
+      if (id === "/" + MODULE_ID_VIRTUAL) {
+        return MODULE_ID_VIRTUAL;
+      }
+    },
+    async load(id) {
+      if (id === MODULE_ID_VIRTUAL) {
+        const result = await transformWithEsbuild(ctx.codegen(), "router.jsx", {
+          jsx: "transform",
+          loader: "jsx",
+        });
+
+        return result;
+      }
+    },
+    transformIndexHtml: {
+      enforce: "pre",
+      transform: () => {
+        return [
+          {
+            tag: "div",
+            attrs: { id: "root" },
+            injectTo: "body",
+          },
+          {
+            tag: "script",
+            attrs: { type: "module" },
+            children: `import "/${MODULE_ID_VIRTUAL}"`,
+            injectTo: "body",
+          },
+        ];
+      },
+    },
+  };
 }

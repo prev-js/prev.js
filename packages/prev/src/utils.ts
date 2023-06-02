@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import childProcess from "node:child_process";
 import { bundleRequire } from "bundle-require";
 import JoyCon from "joycon";
 import strip from "strip-json-comments";
@@ -82,4 +83,44 @@ export async function loadConfig(
   }
 
   return {};
+}
+
+export function getBinaryVersion(binaryName: string) {
+  try {
+    return childProcess.execFileSync(binaryName, ["--version"]).toString().trim();
+  } catch {
+    return "N/A";
+  }
+}
+
+export function getPackageVersion(packageName: string) {
+  const a = getListedPackageVersion(packageName);
+  const b = getInstalledPackageVersion(packageName);
+
+  if (a === b) {
+    return a;
+  } else {
+    return `${a} => ${b}`;
+  }
+}
+
+export function getListedPackageVersion(packageName: string) {
+  const packageJson = requireJson("package.json");
+
+  return (
+    packageJson?.dependencies?.[packageName] ?? packageJson?.devDependencies?.[packageName] ?? "N/A"
+  );
+}
+
+export function getInstalledPackageVersion(packageName: string) {
+  try {
+    return require(`${packageName}/package.json`).version;
+  } catch {
+    return "N/A";
+  }
+}
+
+export function requireJson(filePath: string) {
+  const file = fs.readFileSync(filePath, { encoding: "utf-8" });
+  return file ? JSON.parse(file) : null;
 }
