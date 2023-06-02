@@ -1,3 +1,15 @@
+### Version 0.5.0
+
+- docs: update
+- feat: add eslint config
+- example: add custom config
+- docs: update
+- fix: remove lint cmd
+- fix: fix cmd when load local vite config
+- refactor: merge router plugin package to core
+- feat: add CPA package
+- feat: support older react version
+
 ### Version 0.4.0
 
 - fix: typings
